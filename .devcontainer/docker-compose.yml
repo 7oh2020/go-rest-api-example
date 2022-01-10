@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  app:
+    container_name: rest-app
+    build: .
+    volumes:
+      - ..:/go/src/app:cached
+    ports:
+      - 8080:8080
+    environment:
+      TZ: "Asia/Tokyo"
+      MYSQL_DSN: root:pass@tcp(db:3306)/dev?parseTime=true
+    tty: true
+
+  db:
+    container_name: rest-db
+    image: mysql:5.7
+    environment:
+      TZ: "Asia/Tokyo"
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: dev
+    tty: true
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
